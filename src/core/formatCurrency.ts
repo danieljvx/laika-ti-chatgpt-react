@@ -1,11 +1,10 @@
 const formatCurrency = (money: number) => {
-  return new Intl.NumberFormat(
-    "es-CO", {
-    style: "currency",
-    currency: "COP",
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
     maximumFractionDigits: 0,
     minimumFractionDigits: 0,
-  }).format(money);
-};
+  }).format(money)
+}
 
-export default formatCurrency;
+export default formatCurrency

@@ -1,3 +1,3 @@
-import LaikaChatGPT from "./components";
+import LaikaChatGPT from './components'
 
-export { LaikaChatGPT };
+export { LaikaChatGPT }
