@@ -4,7 +4,7 @@ import Product from './product'
 import Box from '@mui/material/Box'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
-import 'swiper/css'
+import 'swiper/swiper.min.css'
 
 type Props = {
   products: IProduct[]

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useClasses } from '../../core/hooks'
-import laikaGPTIcon from '../../core/laika-profile.svg'
+import LaikaLogoProfile from '../../core/laika-logo-profile'
 import classNames from 'classnames'
 
 const useStyles = () => ({
@@ -124,7 +124,7 @@ const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title }) => {
           {title || 'Hola, ¿cómo podemos ayudarte?'}
         </p>
       </div>
-      <img src={laikaGPTIcon} className={classes.icon} alt='LaikaGPT' />
+      <LaikaLogoProfile className={classes.icon} />
     </div>
   )
 }

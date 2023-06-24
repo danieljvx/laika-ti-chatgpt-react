@@ -6,10 +6,10 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import classNames from 'classnames'
 import { ITheme, IUser } from '../../core/types'
-import laikaGPTIcon from '../../core/laika-profile.svg'
 import Avatar from '@mui/material/Avatar'
 import { AccountCircle } from '@mui/icons-material'
 import Tooltip from '@mui/material/Tooltip'
+import LaikaLogoProfile from '../../core/laika-logo-profile'
 
 const useStyles = () => ({
   text: {
@@ -114,7 +114,7 @@ const Message: FC<Props> = ({ user, guest, text, time, left, right, theme, isWSC
             />
           </Tooltip>
           <>
-            {left && <img src={laikaGPTIcon} className={classes.iconLeft} alt='LaikaGPT' />}
+            {left && <LaikaLogoProfile className={classes.iconLeft} />}
             {right && user?.avatar && (
               <Avatar
                 alt={user?.fullname}
