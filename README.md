@@ -3,12 +3,11 @@
 </p>
 
   <p align="center">A component reactjs for <a href="http://laika.com.co" target="_blank">Laika</a> chat assistant connecting by socket to consume chat-gpt api rest.</p>
-    <p align="center">
+
 [![NPM version][npm-image]][npm-url]
 [![Build][github-build]][github-build-url]
 ![npm-typescript]
 [![License][github-license]][github-license-url]
-</p>
 
 ## Dependencies
 
