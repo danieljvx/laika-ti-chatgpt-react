@@ -39,7 +39,7 @@ Add `LaikaChatGPT` to your component:
 ```js
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import LaikaChatGPT from 'laika-ti-chatgpt-react'
+import { LaikaChatGPT } from 'laika-ti-chatgpt-react'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
