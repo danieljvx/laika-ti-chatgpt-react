@@ -29,7 +29,7 @@ $ npm install laika-ti-chatgpt-react
 ```
 or
 ```bash
-$ yarn install laika-ti-chatgpt-react
+$ yarn add laika-ti-chatgpt-react
 ```
 
 ## Usage
