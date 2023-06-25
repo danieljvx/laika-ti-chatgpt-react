@@ -69,6 +69,6 @@ Author - [Daniel Villanueva](jose.villanueva@laika.pet)
 [npm-image]: https://img.shields.io/npm/v/laika-ti-chatgpt-react
 [github-license]: https://img.shields.io/github/license/danieljvx/laika-ti-chatgpt-react
 [github-license-url]: https://github.com/danieljvx/laika-ti-chatgpt-react/blob/master/LICENSE
-[github-build]: https://github.com/danieljvx/laika-ti-chatgpt-react/actions/workflows/publish.yml/badge.svg
-[github-build-url]: https://github.com/danieljvx/laika-ti-chatgpt-react/actions/workflows/publish.yml
+[github-build]: https://github.com/danieljvx/laika-ti-chatgpt-react/actions/workflows/npm-publish.yml/badge.svg
+[github-build-url]: https://github.com/danieljvx/laika-ti-chatgpt-react/actions/workflows/npm-publish.yml
 [npm-typescript]: https://img.shields.io/npm/types/laika-ti-chatgpt-react
