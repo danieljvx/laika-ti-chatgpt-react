@@ -14,17 +14,21 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
   const [roomLoading, setRoomLoading] = useState(false)
 
   const createFirstRoom = (socketId: string) => {
+    console.log('createFirstRoom', userData);
     setRoomLoading(true)
     if (userData) {
-      createRoom(socket, socketId, userData, null)
+      createRoom(socketId, userData, null)
     }
   }
 
   useEffect(() => {
+    console.log('userData?.userId', userData?.userId);
     if (userData?.userId) {
       socket.on('connect', () => {
+        console.log('connect');
         setWSConnected(true)
         setTimeout(() => {
+          console.log('setTimeout');
           createFirstRoom(socket.id)
         }, 800)
       })

@@ -3,14 +3,17 @@ import { Socket, io } from 'socket.io-client'
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents> | null = null
 
-export const createRoom = (
-  socket: Socket<ServerToClientEvents, ClientToServerEvents>,
-  socketId: string,
-  host: IUser,
-  guest: IUser | undefined | null,
-) => {
+export const createRoom = (socketId: string, host: IUser, guest: IUser | undefined | null) => {
+  console.log('createRoom', {
+    socket,
+    socketId,
+  })
   if (socketId !== '' && socket) {
-    socket.timeout(30000).emit('join_room', {
+    console.log('join_room', {
+      host: { ...host, ...{ socketId: socketId } },
+      guest: guest ? { ...guest, ...{ socketId: socketId } } : null,
+    })
+    socket.emit('join_room', {
       host: { ...host, ...{ socketId: socketId } },
       guest: guest ? { ...guest, ...{ socketId: socketId } } : null,
     })

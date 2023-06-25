@@ -23,7 +23,7 @@ const useStyles = () => ({
     },
     '& .MuiDialog-paper': {
       height: '90vh',
-      width: '100vw',
+      maxWidth: 600,
       maxHeight: '90vh',
       margin: 0,
       padding: 0,
@@ -134,6 +134,12 @@ const Chat: FC<Props> = ({ socket, user, open, setOpen, room, roomLoading, theme
     }
   }
 
+  const setListScrollToDown = () => {
+    if (listMessagesRef.current) {
+      listMessagesRef.current.scrollTop = listMessagesRef.current.scrollHeight
+    }
+  }
+
   useEffect(() => {
     if (socket && !loadSocket) {
       setLoadSocket(true)
@@ -141,10 +147,6 @@ const Chat: FC<Props> = ({ socket, user, open, setOpen, room, roomLoading, theme
       const addMessage = (msg: IMessage) => {
         console.log('socket.on chat', msg)
         setMessages((messages) => [...messages, { ...msg }])
-        console.log('listMessagesRef.current', listMessagesRef.current)
-        if (listMessagesRef.current) {
-          listMessagesRef.current?.lastElementChild?.scrollIntoView()
-        }
       }
       const onWriting = (w: boolean) => {
         setWriting(w)
@@ -183,6 +185,7 @@ const Chat: FC<Props> = ({ socket, user, open, setOpen, room, roomLoading, theme
             theme={theme}
             user={user}
             isWSConnectedIn={isWSConnectedIn}
+            setListScrollToDown={setListScrollToDown}
           />
           <BouncingDotsLoader show={writing} />
         </Grid>

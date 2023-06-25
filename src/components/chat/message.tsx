@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import moment from 'moment'
 import { useClasses } from '../../core/hooks'
 import Grid from '@mui/material/Grid'
@@ -79,14 +79,53 @@ type Props = {
   right?: boolean
   theme: ITheme
   isWSConnectedIn: boolean
+  setListScrollToDown: () => void
 }
 
-const Message: FC<Props> = ({ user, guest, text, time, left, right, theme, isWSConnectedIn }) => {
+const Message: FC<Props> = ({ user, guest, text, time, left, right, theme, isWSConnectedIn, setListScrollToDown }) => {
   const classes = useClasses(useStyles)
+  const [textWriterCount, setTextWriterCount] = useState(0)
+  const [textParse, setTextParse] = useState('')
+  const [textWriter, setTextWriter] = useState('')
+  const [idTimeout, setIdTimeout] = useState<NodeJS.Timeout | null>(null)
+
   const getTime = (time: string): string => {
     moment.locale('es')
     return moment(time).fromNow()
   }
+
+  const parseText = (t: string) => {
+    return t.replace(/\n/g, '<br />')
+  }
+
+  const typeWriter = useCallback(() => {
+    if (textWriterCount < textParse.length) {
+      setTextWriter(`${textWriter}${textParse.charAt(textWriterCount)}`)
+      setTextWriterCount(textWriterCount + 1)
+      if (idTimeout === null) {
+        const id = setTimeout(typeWriter, 5000)
+        setIdTimeout(id)
+      }
+      setListScrollToDown()
+    } else if (idTimeout) {
+      setListScrollToDown()
+      clearTimeout(idTimeout)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [textWriterCount, textParse, idTimeout, textWriter])
+
+  useEffect(() => {
+    if (textParse && textParse !== '') {
+      typeWriter()
+    }
+  }, [textParse, typeWriter])
+
+  useEffect(() => {
+    if (text && text !== '') {
+      setTextParse(parseText(text))
+    }
+  }, [text])
+
   return (
     <ListItem
       key={text}
@@ -104,36 +143,36 @@ const Message: FC<Props> = ({ user, guest, text, time, left, right, theme, isWSC
         })}
       >
         <Grid item xs={12}>
-          <Tooltip title={guest.fullname} placement='bottom' arrow>
-            <ListItemText
-              className={classNames(classes.text, {
-                [classes.left]: left,
-                [classes.right]: right,
-              })}
-              primary={text}
-            />
+          <ListItemText
+            className={classNames(classes.text, {
+              [classes.left]: left,
+              [classes.right]: right,
+            })}
+            primary={<div dangerouslySetInnerHTML={{ __html: textWriter }} />}
+          />
+          <Tooltip title={guest.fullname} placement={left ? 'bottom-end' : 'bottom-start'} arrow>
+            <>
+              {left && <LaikaLogoProfile className={classes.iconLeft} />}
+              {right && user?.avatar && (
+                <Avatar
+                  alt={user?.fullname}
+                  src={user?.avatar}
+                  className={classNames(classes.iconRight, {
+                    [classes.avatarConnected]: isWSConnectedIn,
+                    [classes.avatarDisconnected]: !isWSConnectedIn,
+                  })}
+                />
+              )}
+              {right && !user?.avatar && (
+                <AccountCircle
+                  className={classNames(classes.iconRight, {
+                    [classes.avatarConnected]: isWSConnectedIn,
+                    [classes.avatarDisconnected]: !isWSConnectedIn,
+                  })}
+                />
+              )}
+            </>
           </Tooltip>
-          <>
-            {left && <LaikaLogoProfile className={classes.iconLeft} />}
-            {right && user?.avatar && (
-              <Avatar
-                alt={user?.fullname}
-                src={user?.avatar}
-                className={classNames(classes.iconRight, {
-                  [classes.avatarConnected]: isWSConnectedIn,
-                  [classes.avatarDisconnected]: !isWSConnectedIn,
-                })}
-              />
-            )}
-            {right && !user?.avatar && (
-              <AccountCircle
-                className={classNames(classes.iconRight, {
-                  [classes.avatarConnected]: isWSConnectedIn,
-                  [classes.avatarDisconnected]: !isWSConnectedIn,
-                })}
-              />
-            )}
-          </>
         </Grid>
         <Grid item xs={12}>
           <ListItemText

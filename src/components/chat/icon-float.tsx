@@ -12,6 +12,7 @@ const useStyles = () => ({
     height: 100,
     display: 'flex',
     flexDirection: 'row',
+    zIndex: 999,
   },
   leftBottom: {
     left: '2%',
@@ -19,7 +20,7 @@ const useStyles = () => ({
   },
   rightBottom: {
     right: '2%',
-    bottom: '2%',
+    bottom: '8%',
   },
   leftTop: {
     left: '2%',
@@ -38,6 +39,7 @@ const useStyles = () => ({
   icon: {
     display: 'inline-block',
     height: 90,
+    zIndex: 1001,
   },
   contentTitle: {
     width: 0,
@@ -50,6 +52,8 @@ const useStyles = () => ({
     marginRight: '-50px',
     transitionProperty: 'width',
     transitionDuration: '1s',
+    overflow: 'hidden',
+    zIndex: 1000,
   },
   contentTitleShow: {
     width: 230,
@@ -124,7 +128,7 @@ const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title }) => {
           {title || 'Hola, ¿cómo podemos ayudarte?'}
         </p>
       </div>
-      <LaikaLogoProfile className={classes.icon} />
+      <LaikaLogoProfile width={75} height={85} className={classes.icon} />
     </div>
   )
 }
