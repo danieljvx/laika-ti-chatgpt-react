@@ -5,8 +5,6 @@ import Box from '@mui/material/Box'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
 import 'swiper/scss'
-import 'swiper/scss/navigation'
-import 'swiper/scss/pagination'
 
 type Props = {
   products: IProduct[]
