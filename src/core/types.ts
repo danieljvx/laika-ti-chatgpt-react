@@ -66,6 +66,7 @@ export interface IProduct {
   sale_price: number
   url: string
   brand: string
+  reference_id: number
 }
 
 export interface IProductReference {
