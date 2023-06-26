@@ -17,6 +17,9 @@ describe('Common render', () => {
           url: '',
           brand: '',
         }}
+        addProduct={(product) => {
+          console.log(`on addProduct test: `, product)
+        }}
       />,
     )
   })
