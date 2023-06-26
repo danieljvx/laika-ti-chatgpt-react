@@ -12,9 +12,10 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
   const [themeChat, setThemeChat] = useState<ITheme>(theme || 'light')
   const [room, setRoom] = useState<IRoom | null>(null)
   const [roomLoading, setRoomLoading] = useState(false)
+  const [showNotification, setShowNotification] = useState(false)
 
   const createFirstRoom = (socketId: string) => {
-    console.log('createFirstRoom', userData);
+    console.log('createFirstRoom', userData)
     setRoomLoading(true)
     if (userData) {
       createRoom(socketId, userData, null)
@@ -22,15 +23,18 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
   }
 
   useEffect(() => {
-    console.log('userData?.userId', userData?.userId);
+    console.log('userData?.userId', userData?.userId)
     if (userData?.userId) {
       socket.on('connect', () => {
-        console.log('connect');
+        console.log('connect')
         setWSConnected(true)
         setTimeout(() => {
-          console.log('setTimeout');
+          console.log('setTimeout')
           createFirstRoom(socket.id)
         }, 800)
+      })
+      socket.on('connect_error', (err) => {
+        setWSConnected(false)
       })
       socket.on('disconnect', () => {
         setWSConnected(false)
@@ -55,6 +59,10 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
   }, [user])
 
   useEffect(() => {
+    openChat && setShowNotification(false)
+  }, [openChat])
+
+  useEffect(() => {
     setOpenChat(!!open)
   }, [open])
 
@@ -64,7 +72,13 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
 
   return (
     <>
-      <IconFloat float={float || 'right-bottom'} open={openChat} setOpen={setOpenChat} wsConnected={wsConnected} />
+      <IconFloat
+        float={float || 'right-bottom'}
+        open={openChat}
+        setOpen={setOpenChat}
+        wsConnected={wsConnected}
+        showNotification={showNotification}
+      />
       <Chat
         socket={socket}
         user={userData}
@@ -74,6 +88,7 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
         room={room}
         roomLoading={roomLoading}
         isWSConnectedIn={wsConnected}
+        setShowNotification={setShowNotification}
       />
     </>
   )

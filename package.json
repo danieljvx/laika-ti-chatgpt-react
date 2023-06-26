@@ -1,6 +1,6 @@
 {
   "name": "laika-ti-chatgpt-react",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "description": "component ui reactjs virtual assistant Laika",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",

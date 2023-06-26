@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { useClasses } from '../../core/hooks'
 import LaikaLogoProfile from '../../core/laika-logo-profile'
 import classNames from 'classnames'
+import Badge from '@mui/material/Badge'
 
 const useStyles = () => ({
   content: {
@@ -38,7 +39,7 @@ const useStyles = () => ({
   },
   icon: {
     display: 'inline-block',
-    height: 90,
+    height: 85,
     zIndex: 1001,
   },
   contentTitle: {
@@ -77,6 +78,16 @@ const useStyles = () => ({
     margin: 4,
     opacity: 1,
   },
+  iconNotification: {
+    '& > span': {
+      right: 12,
+      top: 12,
+      width: 15,
+      height: 15,
+      borderRadius: '50%',
+      transformOrigin: '50% 50%',
+    },
+  },
 })
 
 type Props = {
@@ -85,16 +96,15 @@ type Props = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   wsConnected: boolean
   title?: string
+  showNotification: boolean
 }
 
-const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title }) => {
+const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title, showNotification }) => {
   const classes = useClasses(useStyles)
   const [showTitle, setShowTitle] = useState(false)
 
   useEffect(() => {
-    if (open) {
-      setShowTitle(false)
-    }
+    setShowTitle(!open)
   }, [open])
 
   useEffect(() => {
@@ -128,7 +138,11 @@ const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title }) => {
           {title || 'Hola, ¿cómo podemos ayudarte?'}
         </p>
       </div>
-      <LaikaLogoProfile width={75} height={85} className={classes.icon} />
+      <div className={classes.icon}>
+        <Badge color='error' variant='dot' invisible={!showNotification} className={classes.iconNotification}>
+          <LaikaLogoProfile width={75} height={85} />
+        </Badge>
+      </div>
     </div>
   )
 }

@@ -111,9 +111,20 @@ type Props = {
   room: IRoom | null
   roomLoading: boolean
   isWSConnectedIn: boolean
+  setShowNotification: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Chat: FC<Props> = ({ socket, user, open, setOpen, room, roomLoading, theme, isWSConnectedIn }) => {
+const Chat: FC<Props> = ({
+  socket,
+  user,
+  open,
+  setOpen,
+  room,
+  roomLoading,
+  theme,
+  isWSConnectedIn,
+  setShowNotification,
+}) => {
   const listMessagesRef = useRef<HTMLUListElement>(null)
   const classes = useClasses(useStyles)
   const [loadSocket, setLoadSocket] = useState(false)
@@ -141,12 +152,15 @@ const Chat: FC<Props> = ({ socket, user, open, setOpen, room, roomLoading, theme
   }
 
   useEffect(() => {
-    if (socket && !loadSocket) {
+    console.log('useEffect socket', { socket, loadSocket })
+    if (socket) {
       setLoadSocket(true)
       console.log('addMessage socket.on chat', socket)
       const addMessage = (msg: IMessage) => {
         console.log('socket.on chat', msg)
         setMessages((messages) => [...messages, { ...msg }])
+        console.log('open', open)
+        !open && setShowNotification(true)
       }
       const onWriting = (w: boolean) => {
         setWriting(w)
@@ -154,8 +168,12 @@ const Chat: FC<Props> = ({ socket, user, open, setOpen, room, roomLoading, theme
       socket.on('chat', addMessage)
       socket.on('writing', onWriting)
     }
+    return () => {
+      socket && socket.removeListener('writing')
+      socket && socket.removeListener('chat')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket])
+  }, [socket, open])
 
   useEffect(() => {
     if (room?.messages) {
