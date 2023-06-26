@@ -1,32 +1,23 @@
 import React, { FC } from 'react'
 import { IProduct } from '../../../core/types'
 import Product from './product'
-import Box from '@mui/material/Box'
-// import { Swiper, SwiperSlide } from 'swiper/react' disable for nextjs
-// import { Navigation } from 'swiper' disable for nextjs
-// import 'swiper/scss' disable for nextjs
+import { Carousel, CarouselItem } from '../carousel'
 
 type Props = {
   products: IProduct[]
+  addProduct: (product: IProduct) => void
 }
 
-const Products: FC<Props> = ({ products }) => {
-  // const swiperId = Math.floor(Math.random() * 1000)
-  // const swiperPrevButtonClass = `prevEl-${swiperId}`
-  // const swiperNextButtonClass = `nextEl-${swiperId}`
+const Products: FC<Props> = ({ products, addProduct }) => {
   return (
-    <>
-      {products.map((product, i) => (
-        <Box
-          key={`slide-${i}-product`}
-          sx={{
-            padding: '15px 5px',
-          }}
-        >
-          <Product key={`product-${i}`} product={product} />
-        </Box>
-      ))}
-    </>
+    <Carousel
+      items={products}
+      renderItem={({ item, isSnapPoint }) => (
+        <CarouselItem key={item.product_name} isSnapPoint={isSnapPoint}>
+          <Product key={`product-${item.product_name}`} product={item} addProduct={addProduct} />
+        </CarouselItem>
+      )}
+    />
   )
 }
 

@@ -6,7 +6,7 @@ import ListMessages from './list-messages'
 import SendMessage from './send-message'
 import Slide from '@mui/material/Slide'
 import { TransitionProps } from '@mui/material/transitions'
-import { ClientToServerEvents, IMessage, IRoom, ITheme, IUser, ServerToClientEvents } from '../../core//types'
+import { ClientToServerEvents, IMessage, IProduct, IRoom, ITheme, IUser, ServerToClientEvents } from '../../core/types'
 import { useClasses } from '../../core/hooks'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
@@ -29,6 +29,7 @@ const useStyles = () => ({
       padding: 0,
       marginTop: 0,
       borderRadius: '12px 12px 0 0',
+      zIndex: 1002,
     },
   },
   dialogTitle: {
@@ -112,6 +113,7 @@ type Props = {
   roomLoading: boolean
   isWSConnectedIn: boolean
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>
+  addProduct: (product: IProduct) => void
 }
 
 const Chat: FC<Props> = ({
@@ -124,6 +126,7 @@ const Chat: FC<Props> = ({
   theme,
   isWSConnectedIn,
   setShowNotification,
+  addProduct,
 }) => {
   const listMessagesRef = useRef<HTMLUListElement>(null)
   const classes = useClasses(useStyles)
@@ -204,6 +207,7 @@ const Chat: FC<Props> = ({
             user={user}
             isWSConnectedIn={isWSConnectedIn}
             setListScrollToDown={setListScrollToDown}
+            addProduct={addProduct}
           />
           <BouncingDotsLoader show={writing} />
         </Grid>

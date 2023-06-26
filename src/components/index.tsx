@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
 import Chat from './chat'
 import IconFloat from './chat/icon-float'
-import { IChat, IRoom, ITheme, IUser } from '../core/types'
+import { IChat, IProduct, IRoom, ITheme, IUser } from '../core/types'
 import useSocket, { createRoom } from '../core/socket'
 
-const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }) => {
+const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme, addProduct }) => {
   const socket = useSocket(host, !!autoConnect)
   const [wsConnected, setWSConnected] = useState(false)
   const [openChat, setOpenChat] = useState(!!open)
@@ -13,6 +13,10 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
   const [room, setRoom] = useState<IRoom | null>(null)
   const [roomLoading, setRoomLoading] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
+
+  const addProductInto = (product: IProduct) => {
+    console.log(`on addProductInto: `, product)
+  }
 
   const createFirstRoom = (socketId: string) => {
     console.log('createFirstRoom', userData)
@@ -89,6 +93,7 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
         roomLoading={roomLoading}
         isWSConnectedIn={wsConnected}
         setShowNotification={setShowNotification}
+        addProduct={addProduct || addProductInto}
       />
     </>
   )

@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { useClasses } from '../../core/hooks'
 import List from '@mui/material/List'
 import Message from './message'
-import { IMessage, ITheme, IUser } from '../../core/types'
+import { IMessage, IProduct, ITheme, IUser } from '../../core/types'
 import Products from './product/products'
 
 const useStyles = () => ({
@@ -20,11 +20,12 @@ type Props = {
   theme: ITheme
   isWSConnectedIn: boolean
   setListScrollToDown: () => void
+  addProduct: (product: IProduct) => void
 }
 
 // eslint-disable-next-line react/display-name
 const ListMessages = forwardRef<HTMLUListElement, Props>(
-  ({ messages, user, theme, isWSConnectedIn, setListScrollToDown }, ref) => {
+  ({ messages, user, theme, isWSConnectedIn, setListScrollToDown, addProduct }, ref) => {
     const classes = useClasses(useStyles)
     return (
       <List ref={ref} id='chat-list-messages' className={classes.messageArea}>
@@ -44,7 +45,7 @@ const ListMessages = forwardRef<HTMLUListElement, Props>(
                 setListScrollToDown={setListScrollToDown}
               />
               {message.products.length > 0 && (
-                <Products key={`products-${i}-${message.roomId}`} products={message.products} />
+                <Products key={`products-${i}-${message.roomId}`} products={message.products} addProduct={addProduct} />
               )}
             </>
           ))}

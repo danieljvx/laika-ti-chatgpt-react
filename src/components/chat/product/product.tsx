@@ -62,9 +62,10 @@ const LoadingButtonStyled = styled(LoadingButton)<LoadingButtonProps>(() => ({
 
 type Props = {
   product: IProduct
+  addProduct: (product: IProduct) => void
 }
 
-const Product: FC<Props> = ({ product }) => {
+const Product: FC<Props> = ({ product, addProduct }) => {
   const classes = useClasses(useStyles)
   return (
     <Card sx={{ maxWidth: 345 }} className={classes.card}>
@@ -118,7 +119,9 @@ const Product: FC<Props> = ({ product }) => {
         </Box>
       </CardContent>
       <CardActions className={classes.footer}>
-        <LoadingButtonStyled className={classes.button}>Agregar</LoadingButtonStyled>
+        <LoadingButtonStyled className={classes.button} onClick={() => addProduct(product)}>
+          Agregar
+        </LoadingButtonStyled>
       </CardActions>
     </Card>
   )

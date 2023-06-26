@@ -46,7 +46,7 @@ export interface IChat {
   float?: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'
   autoConnect?: boolean
   theme?: ITheme
-  addProduct?: () => void
+  addProduct?: (product: IProduct) => void
 }
 
 export interface IBrand {
