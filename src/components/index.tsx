@@ -33,7 +33,7 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme }
           createFirstRoom(socket.id)
         }, 800)
       })
-      socket.on('connect_error', (err) => {
+      socket.on('connect_error', () => {
         setWSConnected(false)
       })
       socket.on('disconnect', () => {
