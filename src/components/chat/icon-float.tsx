@@ -110,7 +110,10 @@ const useStyles = () => ({
   },
 })
 
-const audio = new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7')
+const audio: HTMLAudioElement | undefined =
+  typeof Audio !== 'undefined'
+    ? new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7')
+    : undefined
 
 type Props = {
   float: string
@@ -129,13 +132,13 @@ const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title, showNo
   const [shake, setShake] = useState(false)
 
   const play = () => {
-    audio.play()
+    audio?.play()
   }
 
-  audio.muted = true
-
   useEffect(() => {
-    audio.muted = audioEnable
+    if (audio?.muted) {
+      audio.muted = audioEnable
+    }
   }, [audioEnable])
 
   useEffect(() => {
