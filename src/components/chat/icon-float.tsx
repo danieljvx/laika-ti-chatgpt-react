@@ -111,7 +111,6 @@ const useStyles = () => ({
 })
 
 const audio = new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7')
-// audio.muted = true
 
 type Props = {
   float: string
@@ -132,6 +131,12 @@ const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title, showNo
   const play = () => {
     audio.play()
   }
+
+  audio.muted = true
+
+  useEffect(() => {
+    audio.muted = audioEnable
+  }, [audioEnable])
 
   useEffect(() => {
     !open && setShowTitle(false)
