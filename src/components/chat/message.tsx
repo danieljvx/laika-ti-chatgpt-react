@@ -20,6 +20,9 @@ const useStyles = () => ({
     marginTop: 2,
     marginBottom: 2,
   },
+  timeDark: {
+    color: 'rgba(255, 255, 255, 0.6) !important',
+  },
   left: {
     textAlign: 'left',
   },
@@ -177,6 +180,7 @@ const Message: FC<Props> = ({ user, guest, text, time, left, right, theme, isWSC
         <Grid item xs={12}>
           <ListItemText
             className={classNames(classes.time, {
+              [classes.timeDark]: theme === 'dark',
               [classes.left]: !left,
               [classes.right]: !right,
             })}

@@ -6,6 +6,7 @@ export interface IUser {
   userId: number
   tokenAuth: string
   socketId: string
+  temp: boolean
 }
 
 export interface IRoom {

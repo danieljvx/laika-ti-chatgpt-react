@@ -10,6 +10,12 @@ const useStyles = () => ({
     height: '60vh',
     overflowY: 'auto',
   },
+  leyend: {
+    textAlign: 'center',
+    '& i': {
+      fontWeight: 'bold',
+    },
+  },
 })
 
 type Props = {
@@ -29,6 +35,9 @@ const ListMessages = forwardRef<HTMLUListElement, Props>(
     const classes = useClasses(useStyles)
     return (
       <List ref={ref} id='chat-list-messages' className={classes.messageArea}>
+        <p className={classes.leyend}>
+          para buscar productos debes indicar en la oración la palabra clave <i>producto's</i>
+        </p>
         {user &&
           messages.map((message, i) => (
             <>

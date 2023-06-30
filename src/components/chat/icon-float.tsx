@@ -42,6 +42,23 @@ const useStyles = () => ({
     height: 85,
     zIndex: 1001,
   },
+  shake: {
+    animation: 'shake 0.5s',
+    animationIterationCount: 'infinite',
+    '@keyframes shake': {
+      '0%': { transform: 'translate(1px, 1px) rotate(0deg)' },
+      '10%': { transform: 'translate(-1px, -2px) rotate(-1deg)' },
+      '20%': { transform: 'translate(-3px, 0px) rotate(1deg)' },
+      '30%': { transform: 'translate(3px, 2px) rotate(0deg)' },
+      '40%': { transform: 'translate(1px, -1px) rotate(1deg)' },
+      '50%': { transform: 'translate(-1px, 2px) rotate(-1deg)' },
+      '60%': { transform: 'translate(-3px, 1px) rotate(0deg)' },
+      '70%': { transform: 'translate(3px, 1px) rotate(-1deg)' },
+      '80%': { transform: 'translate(-1px, -1px) rotate(1deg)' },
+      '90%': { transform: 'translate(1px, 2px) rotate(0deg)' },
+      '100%': { transform: 'translate(1px, -2px) rotate(-1deg)' },
+    },
+  },
   contentTitle: {
     width: 0,
     borderRadius: 40,
@@ -67,9 +84,12 @@ const useStyles = () => ({
     textAlign: 'center',
     margin: 4,
     transitionProperty: 'opacity',
-    transitionDuration: '2s',
+    transitionDuration: '0.8s',
     opacity: 0,
     userSelect: 'none',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
   },
   titleShow: {
     fontWeight: 600,
@@ -90,6 +110,9 @@ const useStyles = () => ({
   },
 })
 
+const audio = new Audio('https://drive.google.com/uc?export=download&id=1M95VOpto1cQ4FQHzNBaLf0WFQglrtWi7')
+// audio.muted = true
+
 type Props = {
   float: string
   open: boolean
@@ -97,21 +120,41 @@ type Props = {
   wsConnected: boolean
   title?: string
   showNotification: boolean
+  audioEnable: boolean
 }
 
-const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title, showNotification }) => {
+const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title, showNotification, audioEnable }) => {
   const classes = useClasses(useStyles)
   const [showTitle, setShowTitle] = useState(false)
+  const [message, setMessage] = useState('')
+  const [shake, setShake] = useState(false)
+
+  const play = () => {
+    audio.play()
+  }
 
   useEffect(() => {
-    setShowTitle(!open)
+    !open && setShowTitle(false)
   }, [open])
 
   useEffect(() => {
-    if (wsConnected) {
+    if (wsConnected && message !== '') {
       setShowTitle(true)
     }
-  }, [wsConnected])
+  }, [message, wsConnected])
+
+  useEffect(() => {
+    if (title) {
+      setShake(true)
+      setShowTitle(false)
+      audioEnable && play()
+      setTimeout(() => {
+        setShake(false)
+        setMessage(title)
+        setShowTitle(true)
+      }, 600)
+    }
+  }, [audioEnable, message, showNotification, title])
 
   return (
     <div
@@ -135,12 +178,12 @@ const IconFloat: FC<Props> = ({ float, open, setOpen, wsConnected, title, showNo
             [classes.titleShow]: showTitle,
           })}
         >
-          {title || 'Hola, ¿cómo podemos ayudarte?'}
+          {message}
         </p>
       </div>
       <div className={classes.icon}>
         <Badge color='error' variant='dot' invisible={!showNotification} className={classes.iconNotification}>
-          <LaikaLogoProfile width={75} height={85} />
+          <LaikaLogoProfile width={75} height={85} className={shake ? classes.shake : ''} />
         </Badge>
       </div>
     </div>

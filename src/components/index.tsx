@@ -4,6 +4,21 @@ import IconFloat from './chat/icon-float'
 import { IChat, IProduct, IRoom, ITheme, IUser } from '../core/types'
 import useSocket, { createRoom } from '../core/socket'
 
+const createUserTemp = (): IUser => {
+  const id = Math.floor(Math.random() * (100000 - 10000 + 10000) + 100000)
+  const user: IUser = {
+    id,
+    fullname: `User Temp #${id}`,
+    email: `${id}@laika.temp`,
+    avatar: '',
+    userId: id,
+    tokenAuth: '',
+    socketId: '',
+    temp: true,
+  }
+  return user
+}
+
 const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme, addProduct }) => {
   const socket = useSocket(host, !!autoConnect)
   const [wsConnected, setWSConnected] = useState(false)
@@ -13,6 +28,8 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme, 
   const [room, setRoom] = useState<IRoom | null>(null)
   const [roomLoading, setRoomLoading] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
+  const [lastMessage, setLastMessage] = useState('')
+  const [audioEnable, setAudioEnable] = useState(true)
 
   const addProductInto = (product: IProduct) => {
     console.log(`on addProductInto: `, product)
@@ -59,7 +76,11 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme, 
   }, [userData])
 
   useEffect(() => {
-    user && setUserData(user)
+    if (user) {
+      setUserData(user)
+    } else if (user === null) {
+      setUserData(createUserTemp())
+    }
   }, [user])
 
   useEffect(() => {
@@ -82,18 +103,24 @@ const LaikaChatGPT: FC<IChat> = ({ host, open, float, user, autoConnect, theme, 
         setOpen={setOpenChat}
         wsConnected={wsConnected}
         showNotification={showNotification}
+        title={lastMessage}
+        audioEnable={audioEnable}
       />
       <Chat
         socket={socket}
         user={userData}
         open={openChat}
         setOpen={setOpenChat}
-        theme={themeChat}
         room={room}
         roomLoading={roomLoading}
         isWSConnectedIn={wsConnected}
         setShowNotification={setShowNotification}
         addProduct={addProduct || addProductInto}
+        setLastMessage={setLastMessage}
+        theme={themeChat}
+        setTheme={setThemeChat}
+        audioEnable={audioEnable}
+        setAudioEnable={setAudioEnable}
       />
     </>
   )

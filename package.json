@@ -25,6 +25,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "classnames": "^2.3.2",
+    "emoji-picker-react": "^4.4.9",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "react": ">=16",

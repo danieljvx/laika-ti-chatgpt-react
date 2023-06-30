@@ -15,6 +15,7 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import DialogActions from '@mui/material/DialogActions'
 import BouncingDotsLoader from './bouncing-dots-loader'
+import classNames from 'classnames'
 
 const useStyles = () => ({
   dialog: {
@@ -32,6 +33,11 @@ const useStyles = () => ({
       zIndex: 1002,
     },
   },
+  dialogDark: {
+    '& .MuiDialog-paper': {
+      backgroundColor: '#282c34',
+    },
+  },
   dialogTitle: {
     padding: '30px 40px !important',
     textAlign: 'center !important',
@@ -44,6 +50,12 @@ const useStyles = () => ({
       '& svg': {
         fontSize: 28,
       },
+    },
+  },
+  dialogTitleDark: {
+    color: '#FFF',
+    '& button': {
+      color: '#FFF',
     },
   },
   dialogContent: {
@@ -108,12 +120,16 @@ type Props = {
   user: IUser | null
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  theme: ITheme
   room: IRoom | null
   roomLoading: boolean
   isWSConnectedIn: boolean
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>
   addProduct: (product: IProduct) => void
+  setLastMessage: React.Dispatch<React.SetStateAction<string>>
+  theme: ITheme
+  setTheme: React.Dispatch<React.SetStateAction<ITheme>>
+  audioEnable: boolean
+  setAudioEnable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Chat: FC<Props> = ({
@@ -123,10 +139,14 @@ const Chat: FC<Props> = ({
   setOpen,
   room,
   roomLoading,
-  theme,
   isWSConnectedIn,
   setShowNotification,
   addProduct,
+  setLastMessage,
+  theme,
+  setTheme,
+  audioEnable,
+  setAudioEnable,
 }) => {
   const listMessagesRef = useRef<HTMLUListElement>(null)
   const classes = useClasses(useStyles)
@@ -163,7 +183,13 @@ const Chat: FC<Props> = ({
         console.log('socket.on chat', msg)
         setMessages((messages) => [...messages, { ...msg }])
         console.log('open', open)
-        !open && setShowNotification(true)
+        console.log('user?.id', user?.id)
+        console.log('msg.user.id', msg.user.id)
+        console.log('msg.user.id !== user?.id', msg.user.id !== user?.id)
+        if (msg.user.id !== user?.id) {
+          !open && setShowNotification(true)
+          setLastMessage(msg.message)
+        }
       }
       const onWriting = (w: boolean) => {
         setWriting(w)
@@ -176,7 +202,7 @@ const Chat: FC<Props> = ({
       socket && socket.removeListener('chat')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket, open])
+  }, [socket, open, user])
 
   useEffect(() => {
     if (room?.messages) {
@@ -191,10 +217,18 @@ const Chat: FC<Props> = ({
       keepMounted
       onClose={() => setOpen(false)}
       aria-describedby='alert-dialog-slide-description'
-      className={classes.dialog}
+      className={classNames(classes.dialog, {
+        [classes.dialogDark]: theme === 'dark',
+      })}
       hideBackdrop
     >
-      <BootstrapDialogTitle id='customized-dialog-title' onClose={() => setOpen(false)} className={classes.dialogTitle}>
+      <BootstrapDialogTitle
+        id='customized-dialog-title'
+        onClose={() => setOpen(false)}
+        className={classNames(classes.dialogTitle, {
+          [classes.dialogTitleDark]: theme === 'dark',
+        })}
+      >
         ¡Te ayudaré a buscar lo que necesita tu mascota!
       </BootstrapDialogTitle>
       <DialogContent dividers className={classes.dialogContent}>
@@ -213,7 +247,16 @@ const Chat: FC<Props> = ({
         </Grid>
       </DialogContent>
       <DialogActions className={classes.dialogFooter}>
-        <SendMessage open={open} room={room} roomLoading={roomLoading} sendMessage={sendMessage} />
+        <SendMessage
+          open={open}
+          room={room}
+          roomLoading={roomLoading}
+          sendMessage={sendMessage}
+          theme={theme}
+          setTheme={setTheme}
+          audioEnable={audioEnable}
+          setAudioEnable={setAudioEnable}
+        />
       </DialogActions>
     </BootstrapDialog>
   )
