@@ -36,7 +36,7 @@ const ListMessages = forwardRef<HTMLUListElement, Props>(
     return (
       <List ref={ref} id='chat-list-messages' className={classes.messageArea}>
         <p className={classes.leyend}>
-          para buscar productos debes indicar en la oración la palabra clave <i>producto's</i>
+          para buscar productos debes indicar en la oración la palabra clave <i>producto&lsquo;s</i>
         </p>
         {user &&
           messages.map((message, i) => (
